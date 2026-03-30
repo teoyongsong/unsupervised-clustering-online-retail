@@ -30,6 +30,7 @@ cat > "${DOCS_DIR}/index.html" <<'HTML'
     <h1>Online Retail Customer Segmentation</h1>
     <p class="muted">Static deployment landing page</p>
     <p><a href="./report.html">Open Full Report</a></p>
+    <p><a href="./customer_segmentation_slides.html">Open Slide Deck</a></p>
   </div>
 </body>
 </html>
