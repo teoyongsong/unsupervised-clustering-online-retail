@@ -1,0 +1,14 @@
+name: unsupervised-clustering-online-retail
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pandas
+  - numpy
+  - matplotlib
+  - seaborn
+  - scikit-learn
+  - openpyxl
+  - jupyter
+  - ipykernel

@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Segmentation Report</title>
+  <style>
+    :root {
+      --bg: #f7f8fc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --border: #e5e7eb;
+      --ok: #0f766e;
+      --warn: #92400e;
+      --bad: #991b1b;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.45;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 28px auto;
+      padding: 0 16px 40px;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+      color: white;
+      padding: 22px 24px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 20px rgba(29, 78, 216, 0.16);
+    }
+
+    .header h1 { margin: 0 0 6px; font-size: 1.6rem; }
+    .header p { margin: 0; opacity: 0.94; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .kpi-label { color: var(--muted); font-size: 0.9rem; }
+    .kpi-value { font-size: 1.5rem; font-weight: 700; margin-top: 6px; }
+
+    h2 {
+      margin: 22px 0 10px;
+      font-size: 1.1rem;
+      color: #111827;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    th { background: #f9fafb; }
+    tr:last-child td { border-bottom: none; }
+
+    .tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid transparent;
+    }
+    .tag-ok { color: var(--ok); background: #ecfeff; border-color: #99f6e4; }
+    .tag-warn { color: var(--warn); background: #fffbeb; border-color: #fcd34d; }
+    .tag-bad { color: var(--bad); background: #fef2f2; border-color: #fca5a5; }
+
+    ul { margin-top: 8px; }
+    li { margin: 4px 0; }
+
+    .footnote {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    code {
+      background: #eef2ff;
+      padding: 1px 6px;
+      border-radius: 6px;
+    }
+
+    .plot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 12px;
+    }
+
+    .plot-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .plot-title {
+      margin: 0 0 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="header">
+      <h1>Online Retail Customer Segmentation</h1>
+      <p>RFM-based clustering with KMeans baseline and GMM comparison</p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="kpi-label">Raw rows loaded</div>
+        <div class="kpi-value">525,461</div>
+      </article>
+      <article class="card">
+        <div class="kpi-label">Rows after cleaning</div>
+        <div class="kpi-value">407,664</div>
+      </article>
+      <article class="card">
+        <div class="kpi-label">Customers segmented</div>
+        <div class="kpi-value">4,312</div>
+      </article>
+      <article class="card">
+        <div class="kpi-label">Chosen clusters (K)</div>
+        <div class="kpi-value">3</div>
+      </article>
+    </section>
+
+    <h2>Model Selection</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Silhouette Score</th>
+          <th>Interpretation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>KMeans (k=3)</td>
+          <td><strong>0.4117</strong></td>
+          <td><span class="tag tag-ok">Best baseline</span></td>
+        </tr>
+        <tr>
+          <td>GMM (k=3)</td>
+          <td>Run notebook cell for exact value</td>
+          <td><span class="tag tag-warn">Secondary comparison</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Cluster Profiles (Relative RFM)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Cluster</th>
+          <th>Segment Name</th>
+          <th>Recency</th>
+          <th>Frequency</th>
+          <th>Monetary</th>
+          <th>Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0</td>
+          <td><strong>Champions</strong></td>
+          <td>34.06 (low)</td>
+          <td>2.18 (high)</td>
+          <td>8.00 (high)</td>
+          <td>1,361</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td><strong>At-Risk</strong></td>
+          <td>249.76 (very high)</td>
+          <td>0.85 (low)</td>
+          <td>5.59 (low)</td>
+          <td>955</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>Potential Loyalists</strong></td>
+          <td>54.24 (mid)</td>
+          <td>1.07 (mid-low)</td>
+          <td>6.16 (mid)</td>
+          <td>1,996</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Key Plots</h2>
+    <section class="plot-grid">
+      <article class="card plot-card">
+        <p class="plot-title">Customers per Segment</p>
+        <img src="./assets/segment_size.png" alt="Bar chart showing customer count per segment" />
+      </article>
+      <article class="card plot-card">
+        <p class="plot-title">Average Revenue per Customer by Segment</p>
+        <img src="./assets/avg_revenue_by_segment.png" alt="Bar chart showing average revenue per segment" />
+      </article>
+      <article class="card plot-card">
+        <p class="plot-title">Customer Segments (PCA projection)</p>
+        <img src="./assets/customer_segments_pca.png" alt="Scatter plot of customer segments projected onto two PCA components" />
+      </article>
+    </section>
+
+    <h2>Recommended Actions</h2>
+    <div class="card">
+      <ul>
+        <li><strong>Champions:</strong> offer early access, loyalty perks, and referral incentives.</li>
+        <li><strong>Potential Loyalists:</strong> drive 2nd/3rd purchase with bundles and personalized cross-sell.</li>
+        <li><strong>At-Risk:</strong> run win-back campaigns with stronger offers and reactivation journeys.</li>
+      </ul>
+    </div>
+
+    <h2>Project Outputs</h2>
+    <div class="card">
+      <ul>
+        <li>Notebook: <code>notebooks/01_customer_segmentation_starter.ipynb</code></li>
+        <li>Export file: <code>data/processed/customer_segments.csv</code></li>
+        <li>Environment: <code>environment.yml</code></li>
+      </ul>
+    </div>
+
+    <p class="footnote">
+      Note: Frequency and Monetary values in clustering were log-transformed for modeling stability.
+      Use the exported file for business-facing dashboards and campaign execution.
+    </p>
+  </main>
+</body>
+</html>

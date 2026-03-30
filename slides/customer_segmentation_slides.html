@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Segmentation - Slide Deck</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #111a2d;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #60a5fa;
+      --good: #34d399;
+      --warn: #fbbf24;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: radial-gradient(circle at 20% 10%, #1e3a8a, var(--bg));
+      color: var(--text);
+    }
+    .deck {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 22px 40px;
+    }
+    .slide {
+      display: none;
+      min-height: 82vh;
+      padding: 28px;
+      background: rgba(17, 26, 45, 0.9);
+      border: 1px solid #24324a;
+      border-radius: 16px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
+    }
+    .slide.active { display: block; }
+    h1, h2 { margin-top: 0; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; color: #dbeafe; }
+    p, li { font-size: 1.05rem; }
+    .muted { color: var(--muted); }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .kpi {
+      background: #0b162b;
+      border: 1px solid #253b59;
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .kpi .label { color: var(--muted); font-size: 0.9rem; }
+    .kpi .value { font-size: 1.45rem; font-weight: 700; margin-top: 5px; }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .panel {
+      background: #0b162b;
+      border: 1px solid #253b59;
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .panel img {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #24324a;
+      background: #fff;
+    }
+    .tag {
+      display: inline-block;
+      margin: 2px 6px 2px 0;
+      font-size: 0.8rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid #33517c;
+      color: #bfdbfe;
+      background: #0d2344;
+    }
+    .good { color: var(--good); }
+    .warn { color: var(--warn); }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      color: var(--muted);
+    }
+    .btn {
+      border: 1px solid #365a86;
+      border-radius: 8px;
+      background: #0d2344;
+      color: #dbeafe;
+      padding: 7px 10px;
+      cursor: pointer;
+    }
+    @media (max-width: 900px) {
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck">
+    <section class="slide active">
+      <h1>Online Retail II Customer Segmentation</h1>
+      <p class="muted">Unsupervised clustering (RFM) for marketing actionability</p>
+      <div class="kpis">
+        <div class="kpi"><div class="label">Raw Transactions</div><div class="value">525,461</div></div>
+        <div class="kpi"><div class="label">After Cleaning</div><div class="value">407,664</div></div>
+        <div class="kpi"><div class="label">Customers</div><div class="value">4,312</div></div>
+        <div class="kpi"><div class="label">Final Clusters</div><div class="value">3</div></div>
+      </div>
+      <p><span class="tag">RFM</span><span class="tag">KMeans</span><span class="tag">GMM Comparison</span><span class="tag">PCA</span></p>
+    </section>
+
+    <section class="slide">
+      <h2>Approach</h2>
+      <ul>
+        <li>Clean transactions: remove missing customer IDs, cancellations, and non-positive values.</li>
+        <li>Create customer-level features: <strong>Recency</strong>, <strong>Frequency</strong>, <strong>Monetary</strong>.</li>
+        <li>Apply log transform to Frequency and Monetary to reduce skew.</li>
+        <li>Scale features, test multiple k values, and select by silhouette + interpretability.</li>
+        <li>Assign business-friendly segment names and recommendations.</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>Model Selection</h2>
+      <p>KMeans with <strong>k=3</strong> achieved the strongest baseline separation.</p>
+      <ul>
+        <li><span class="good">KMeans silhouette: 0.4117</span></li>
+        <li class="warn">GMM used as comparison model (check notebook output for latest score)</li>
+      </ul>
+      <p class="muted">Why k=3: balanced cluster quality and easy stakeholder interpretation.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Segment Definitions</h2>
+      <div class="row">
+        <div class="panel">
+          <h3>Champions</h3>
+          <p>Low recency, highest frequency, highest spend.</p>
+        </div>
+        <div class="panel">
+          <h3>Potential Loyalists</h3>
+          <p>Moderate recency and value; good conversion upside.</p>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 12px;">
+        <div class="panel">
+          <h3>At-Risk</h3>
+          <p>Long inactive window with low activity and lower spend.</p>
+        </div>
+        <div class="panel">
+          <h3>Actions</h3>
+          <p>Retention for Champions, upsell for Potential Loyalists, win-back for At-Risk.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2>Results Visualization</h2>
+      <div class="row">
+        <div class="panel">
+          <p class="muted">Customers per Segment</p>
+          <img src="../reports/assets/segment_size.png" alt="Customers per Segment" />
+        </div>
+        <div class="panel">
+          <p class="muted">Avg Revenue by Segment</p>
+          <img src="../reports/assets/avg_revenue_by_segment.png" alt="Average Revenue by Segment" />
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2>PCA Projection</h2>
+      <div class="panel">
+        <img src="../reports/assets/customer_segments_pca.png" alt="Customer Segments PCA projection" />
+      </div>
+      <p class="muted">Two-dimensional projection used for communication, not for model training.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Deliverables and Deployment</h2>
+      <ul>
+        <li>Notebook: <code>notebooks/01_customer_segmentation_starter.ipynb</code></li>
+        <li>Data output: <code>data/processed/customer_segments.csv</code></li>
+        <li>Report: <code>reports/customer_segmentation_report.html</code></li>
+        <li>Deploy site: <code>bash scripts/deploy_report.sh</code> then open <code>docs/index.html</code></li>
+      </ul>
+      <p><strong>Project status:</strong> baseline complete and presentation-ready.</p>
+    </section>
+
+    <div class="controls">
+      <button class="btn" id="prevBtn">Prev</button>
+      <span id="counter">1 / 7</span>
+      <button class="btn" id="nextBtn">Next</button>
+    </div>
+  </main>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const counter = document.getElementById("counter");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    let i = 0;
+
+    function render() {
+      slides.forEach((s, idx) => s.classList.toggle("active", idx === i));
+      counter.textContent = `${i + 1} / ${slides.length}`;
+    }
+    function next() { i = Math.min(i + 1, slides.length - 1); render(); }
+    function prev() { i = Math.max(i - 1, 0); render(); }
+
+    nextBtn.addEventListener("click", next);
+    prevBtn.addEventListener("click", prev);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === "PageDown") next();
+      if (e.key === "ArrowLeft" || e.key === "PageUp") prev();
+    });
+    render();
+  </script>
+</body>
+</html>
