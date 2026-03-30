@@ -24,11 +24,10 @@ unsupervised-clustering-online-retail/
 │       ├── segment_size.png
 │       ├── avg_revenue_by_segment.png
 │       └── customer_segments_pca.png
-├── slides/
-│   └── customer_segmentation_slides.html
 ├── scripts/
 │   └── deploy_report.sh
 ├── docs/                            # generated deployable site
+│   └── customer_segmentation_slides.html
 ├── environment.yml
 ├── requirements.txt
 └── README.md
@@ -76,7 +75,7 @@ Notebook outputs include:
 
 ## Slide Deck
 
-- Deck file: `slides/customer_segmentation_slides.html`
+- Deck file: `docs/customer_segmentation_slides.html`
 - Open in browser and use arrow keys to navigate.
 
 ## Deploy Report (Static Site)
